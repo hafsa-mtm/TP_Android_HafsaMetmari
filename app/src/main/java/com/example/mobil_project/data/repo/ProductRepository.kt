@@ -3,8 +3,11 @@ package com.example.mobil_project.data.repo
 import com.example.mobil_project.R
 import com.example.mobil_project.data.entities.Product
 import kotlinx.coroutines.delay
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ProductRepository {
+@Singleton
+class ProductRepository @Inject constructor() {
     suspend fun getProducts(): List<Product> {
         delay(2000) // Simulate network/database delay
         return listOf(
@@ -22,8 +25,7 @@ class ProductRepository {
                 description = "Wireless Bluetooth Noise Cancelling",
                 price = 149.99,
                 quantity = 25,
-                R.drawable.headphon
-
+                R.drawable.headphon // make sure this drawable exists
             ),
             Product(
                 productId = "3",

@@ -1,18 +1,21 @@
 package com.example.mobil_project.ui_product.product
 
 import androidx.lifecycle.ViewModel
-
 import androidx.lifecycle.viewModelScope
 import com.example.mobil_project.data.repo.ProductRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProductViewModel : ViewModel() {
+@HiltViewModel
+class ProductViewModel @Inject constructor(
+    private val repository: ProductRepository
+) : ViewModel() {
 
     private val _state = MutableStateFlow(ProductViewState())
     val state: StateFlow<ProductViewState> = _state
-    private val repository = ProductRepository()
 
     fun handleIntent(intent: ProductIntent) {
         when (intent) {
@@ -35,5 +38,3 @@ class ProductViewModel : ViewModel() {
         }
     }
 }
-
-
