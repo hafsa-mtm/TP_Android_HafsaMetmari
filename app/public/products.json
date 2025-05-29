@@ -1,0 +1,74 @@
+[
+  {
+    "productId": "REFAZER",
+    "title": "Tablette SAM 12 Pouce",
+    "description": "Description du produit",
+    "price": 2334.0,
+    "quantity": 10,
+    "imageRes": "samsung_tab_12"
+  },
+  {
+    "productId": "EFRRR",
+    "title": "IPhone 14",
+    "description": "Description du produit",
+    "price": 11000.0,
+    "quantity": 5,
+    "imageRes": "iphone_14"
+  },
+  {
+    "productId": "SQZEE",
+    "title": "Smart TV 48 Pouce",
+    "description": "Description du produit",
+    "price": 8000.0,
+    "quantity": 7,
+    "imageRes": "tv_samsung_48"
+  },
+  {
+    "productId": "RIFAZER",
+    "title": "Tablette SAM 12 Pouce",
+    "description": "Description du produit",
+    "price": 2334.0,
+    "quantity": 8,
+    "imageRes": "samsung_tab_12"
+  },
+  {
+    "productId": "RTVVV",
+    "title": "IPhone 14",
+    "description": "Description du produit",
+    "price": 11000.0,
+    "quantity": 6,
+    "imageRes": "iphone_14"
+  },
+  {
+    "productId": "SQPEE",
+    "title": "Smart TV 48 Pouce",
+    "description": "Description du produit",
+    "price": 8000.0,
+    "quantity": 9,
+    "imageRes": "tv_samsung_48"
+  },
+  {
+    "productId": "RTRAZE",
+    "title": "Tablette SAM 12 Pouce",
+    "description": "Description du produit",
+    "price": 2334.0,
+    "quantity": 11,
+    "imageRes": "samsung_tab_12"
+  },
+  {
+    "productId": "SVZEE",
+    "title": "Smart TV 48 Pouce",
+    "description": "Description du produit",
+    "price": 8000.0,
+    "quantity": 4,
+    "imageRes": "tv_samsung_48"
+  },
+  {
+    "productId": "RURETR",
+    "title": "Tablette SAM 12 Pouce",
+    "description": "Description du produit",
+    "price": 2334.0,
+    "quantity": 12,
+    "imageRes": "samsung_tab_12"
+  }
+]
