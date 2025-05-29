@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import android.util.Log
+
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
@@ -30,9 +32,11 @@ class ProductViewModel @Inject constructor(
     private suspend fun loadProducts() {
         _state.value = _state.value.copy(isLoading = true, error = null)
         try {
+            Log.d("products repo", "loadProducts")
             val products = repository.getProducts()
             _state.value = ProductViewState(isLoading = false, products = products)
         } catch (e: Exception) {
+            Log.d("products repo", "Exception")
             _state.value =
                 ProductViewState(isLoading = false, error = e.message ?: "Error fetching products")
         }

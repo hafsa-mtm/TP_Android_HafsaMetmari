@@ -56,6 +56,11 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.coroutines.android)
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+    // OkHttp pour logging
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
