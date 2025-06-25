@@ -14,9 +14,9 @@ fun ProductItem(product: Product) {
     Column(modifier = Modifier.padding(8.dp)) {
         // Map image names to drawable resources
         val imageRes = when (product.imageName) {
-            "headphon" -> R.drawable.headphon
-            "laptop" -> R.drawable.laptop
-            "mouse" -> R.drawable.mouse
+            "headphon" -> R.drawable.headphon // Actual filename
+            "laptop"   -> R.drawable.laptop      // Must match
+            "mouse"    -> R.drawable.mouse
             else -> null
         }
 
