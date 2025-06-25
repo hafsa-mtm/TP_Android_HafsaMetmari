@@ -32,9 +32,9 @@ fun ProductItem(product: Product, onNavigateToDetails: (String) -> Unit) {
         Column(modifier = Modifier.padding(8.dp)) {
             // Map image names to actual drawable resources
             val imageRes = when (product.imageName) {
-                "samsung_tab_12" -> R.drawable.headphon
-                "iphone_14" -> R.drawable.laptop
-                "tv_samsung_48" -> R.drawable.mouse
+                "headphon" -> R.drawable.headphon
+                "laptop" -> R.drawable.laptop
+                "mouse" -> R.drawable.mouse
                 else -> null
             }
 

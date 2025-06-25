@@ -5,6 +5,7 @@
     "description": "Premium noise-cancelling wireless headphones",
     "price": 199.99,
     "quantity": 15,
+    "category": "Accessories",
     "imageRes": "headphon"
   },
   {
@@ -13,7 +14,8 @@
     "description": "Thin and lightweight laptop with 12-hour battery",
     "price": 899.99,
     "quantity": 8,
-    "imageRes": "laptop"
+    "imageRes": "laptop",
+    "category": "Laptops"
   },
   {
     "productId": "MS003",
@@ -21,6 +23,7 @@
     "description": "Wireless mouse with ergonomic design",
     "price": 49.99,
     "quantity": 20,
+    "category": "Accessories",
     "imageRes": "mouse"
   }
 ]

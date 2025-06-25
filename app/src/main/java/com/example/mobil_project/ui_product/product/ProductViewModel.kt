@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import android.util.Log
-
+import com.example.mobil_project.data.entities.Product
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
@@ -18,6 +18,11 @@ class ProductViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(ProductViewState())
     val state: StateFlow<ProductViewState> = _state
+    private val _selectedCategory = MutableStateFlow("All")
+    val selectedCategory: StateFlow<String> = _selectedCategory
+
+    // Store original unfiltered products
+    private var allProducts: List<Product> = emptyList()
 
     fun handleIntent(intent: ProductIntent) {
         when (intent) {
@@ -26,19 +31,42 @@ class ProductViewModel @Inject constructor(
                     loadProducts()
                 }
             }
+            is ProductIntent.FilterByCategory -> {
+                filterProducts(intent.category)
+            }
         }
     }
 
     private suspend fun loadProducts() {
         _state.value = _state.value.copy(isLoading = true, error = null)
         try {
-            Log.d("products repo", "loadProducts")
-            val products = repository.getProducts()
-            _state.value = ProductViewState(isLoading = false, products = products)
+            Log.d("ProductViewModel", "Loading products...")
+            allProducts = repository.getProducts()
+            _state.value = ProductViewState(
+                isLoading = false,
+                products = allProducts,
+                allProducts = allProducts
+            )
         } catch (e: Exception) {
-            Log.d("products repo", "Exception")
-            _state.value =
-                ProductViewState(isLoading = false, error = e.message ?: "Error fetching products")
+            Log.e("ProductViewModel", "Error loading products", e)
+            _state.value = ProductViewState(
+                isLoading = false,
+                error = e.message ?: "Error fetching products"
+            )
         }
+    }
+
+    private fun filterProducts(category: String) {
+        _selectedCategory.value = category
+
+        val filteredProducts = when (category) {
+            "All" -> allProducts
+            else -> allProducts.filter { it.category?.equals(category, ignoreCase = true) == true }
+        }
+
+        _state.value = _state.value.copy(
+            products = filteredProducts,
+            allProducts = allProducts // Maintain original list
+        )
     }
 }

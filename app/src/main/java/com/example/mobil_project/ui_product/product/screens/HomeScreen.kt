@@ -7,11 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mobil_project.ui_product.product.ProductViewModel
-import com.example.mobil_project.ui_product.product.ProductIntent
-import com.example.mobil_project.ui_product.product.ProductViewState
+import com.example.mobil_project.ui_product.product.component.FilterBar
 import com.example.mobil_project.ui_product.product.component.ProductsList
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.graphics.Color
+import com.example.mobil_project.ui_product.product.ProductIntent
 
 @Composable
 fun HomeScreen(
@@ -27,12 +27,24 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(8.dp)
     ) {
+        // Add the FilterBar at the top
+        FilterBar(viewModel = viewModel)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         when {
             state.isLoading -> CircularProgressIndicator(modifier = Modifier.align(CenterHorizontally))
-            state.error != null -> Text(text = "Error: ${state.error}", color = Color.Red)
-            else -> ProductsList(products = state.products, onNavigateToDetails)
+            state.error != null -> Text(
+                text = "Error: ${state.error}",
+                color = Color.Red,
+                modifier = Modifier.align(CenterHorizontally)
+            )
+            else -> ProductsList(
+                products = state.products,
+                onNavigateToDetails = onNavigateToDetails
+            )
         }
     }
 }
