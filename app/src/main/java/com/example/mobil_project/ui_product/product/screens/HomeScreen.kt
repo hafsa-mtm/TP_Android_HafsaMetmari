@@ -1,23 +1,26 @@
+// ui_product/product/screens/HomeScreen.kt
 package com.example.mobil_project.ui_product.product.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mobil_project.cart.CartManager
+import com.example.mobil_project.data.entities.CartItem
 import com.example.mobil_project.ui_product.product.ProductViewModel
+import com.example.mobil_project.ui_product.product.ProductIntent
 import com.example.mobil_project.ui_product.product.component.FilterBar
 import com.example.mobil_project.ui_product.product.component.ProductsList
-import com.example.mobil_project.ui_product.product.ProductIntent
 
 @Composable
 fun HomeScreen(
     viewModel: ProductViewModel = viewModel(),
     onNavigateToDetails: (String) -> Unit,
+    onNavigateToCart: () -> Unit,
     onLogout: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
@@ -29,7 +32,7 @@ fun HomeScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Custom App Bar (non-experimental)
+        // 🔵 App Bar
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -41,8 +44,13 @@ fun HomeScreen(
                 text = "Products",
                 style = MaterialTheme.typography.headlineSmall
             )
-            TextButton(onClick = onLogout) {
-                Text("Logout")
+            Row {
+                TextButton(onClick = onNavigateToCart) {
+                    Text("My Cart")
+                }
+                TextButton(onClick = onLogout) {
+                    Text("Logout")
+                }
             }
         }
 
@@ -54,23 +62,38 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(8.dp)
         ) {
+            // 🔍 Filter Bar
             FilterBar(viewModel = viewModel)
 
             Spacer(modifier = Modifier.height(8.dp))
 
             when {
-                state.isLoading -> CircularProgressIndicator(
-                    modifier = Modifier.align(CenterHorizontally)
-                )
-                state.error != null -> Text(
-                    text = "Error: ${state.error}",
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.align(CenterHorizontally)
-                )
-                else -> ProductsList(
-                    products = state.products,
-                    onNavigateToDetails = onNavigateToDetails
-                )
+                state.isLoading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(CenterHorizontally))
+                }
+                state.error != null -> {
+                    Text(
+                        text = "Error: ${state.error}",
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(CenterHorizontally)
+                    )
+                }
+                else -> {
+                    ProductsList(
+                        products = state.products,
+                        onNavigateToDetails = onNavigateToDetails,
+                        onAddToCart = { product ->
+                            CartManager.addItem(
+                                CartItem(
+                                    id = product.productId,
+                                    title = product.title ?: "No title",
+                                    price = product.price ?: 0.0,
+                                    imageName = product.imageName // ✅ This is the only change
+                                )
+                            )
+                        }
+                    )
+                }
             }
         }
     }

@@ -2,6 +2,7 @@ package com.example.mobil_project.data.entities
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,14 +11,20 @@ import androidx.compose.ui.unit.dp
 import com.example.mobil_project.R
 
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(
+    product: Product,
+    onNavigateToDetails: (String) -> Unit,
+    onAddToCartClick: (Product) -> Unit    // new callback
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(vertical = 4.dp),
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            // Image mapping
+        Column(modifier = Modifier.padding(8.dp)) {
+            // Map image names to actual drawable resources
             val imageRes = when (product.imageName) {
                 "headphon" -> R.drawable.headphon
                 "laptop" -> R.drawable.laptop
@@ -35,9 +42,19 @@ fun ProductItem(product: Product) {
                 )
             }
 
-            Text(text = product.title ?: "", style = MaterialTheme.typography.titleMedium)
-            Text(text = "Category: ${product.category ?: "N/A"}", style = MaterialTheme.typography.bodySmall)
-            Text(text = "$${product.price ?: 0.0}", style = MaterialTheme.typography.bodyLarge)
+            Text(text = "Title: ${product.title}")
+            Text(text = "Description: ${product.description}")
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(onClick = { onNavigateToDetails(product.productId) }) {
+                    Text(text = "Plus de détails...")
+                }
+                Button(onClick = { onAddToCartClick(product) }) {
+                    Text(text = "Add to Cart")
+                }
+            }
         }
     }
 }

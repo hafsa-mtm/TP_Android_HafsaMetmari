@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.example.mobil_project.auth.AuthManager
 import com.example.mobil_project.ui_product.product.ProductViewModel
 import com.example.mobil_project.ui_product.product.component.DetailsScreen
+import com.example.mobil_project.ui_product.product.screens.CartScreen
 import com.example.mobil_project.ui_product.product.screens.HomeScreen
 import com.example.mobil_project.ui_product.product.screens.LoginScreen
 import com.example.mobil_project.ui_product.product.screens.SignUpScreen
@@ -38,7 +39,6 @@ fun AppNavigation(
             )
         }
 
-
         composable("signup") {
             SignUpScreen(
                 onSignUpSuccess = {
@@ -48,10 +48,14 @@ fun AppNavigation(
                 onNavigateToLogin = { navController.navigate("login") }
             )
         }
+
         composable("home") {
             HomeScreen(
                 viewModel = productViewModel,
-                onNavigateToDetails = { /*...*/ },
+                onNavigateToDetails = { productId ->
+                    navController.navigate("productDetails/${productId}")
+                },
+                onNavigateToCart = { navController.navigate("cart") },
                 onLogout = {
                     AuthManager.logout()
                     navController.navigate("login") {
@@ -60,6 +64,18 @@ fun AppNavigation(
                 }
             )
         }
+
+        composable("productDetails/{productId}") { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: ""
+            DetailsScreen(productId = productId, viewModel = productViewModel)
+        }
+
+        composable("cart") {
+            CartScreen(onNavigateBack = {
+                navController.popBackStack()
+            })
+        }
+
         composable("admin_dashboard") {
             AdminDashboard(onLogout = {
                 AuthManager.logout()
@@ -68,6 +84,5 @@ fun AppNavigation(
                 }
             })
         }
-
     }
 }

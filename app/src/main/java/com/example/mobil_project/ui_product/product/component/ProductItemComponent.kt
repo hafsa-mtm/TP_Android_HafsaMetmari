@@ -19,8 +19,13 @@ import androidx.compose.ui.unit.dp
 import com.example.mobil_project.R
 import com.example.mobil_project.data.entities.Product
 
+// ProductItem.kt
 @Composable
-fun ProductItem(product: Product, onNavigateToDetails: (String) -> Unit) {
+fun ProductItem(
+    product: Product,
+    onNavigateToDetails: (String) -> Unit,
+    onAddToCartClick: (Product) -> Unit // ✅ NEW
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -30,7 +35,6 @@ fun ProductItem(product: Product, onNavigateToDetails: (String) -> Unit) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
-            // Map image names to actual drawable resources
             val imageRes = when (product.imageName) {
                 "headphon" -> R.drawable.headphon
                 "laptop" -> R.drawable.laptop
@@ -53,6 +57,10 @@ fun ProductItem(product: Product, onNavigateToDetails: (String) -> Unit) {
 
             Button(onClick = { onNavigateToDetails(product.productId) }) {
                 Text(text = "Plus de détails...")
+            }
+
+            Button(onClick = { onAddToCartClick(product) }) {
+                Text(text = "Add to Cart") // ✅ New Button
             }
         }
     }

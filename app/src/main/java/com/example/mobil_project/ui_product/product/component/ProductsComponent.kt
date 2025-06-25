@@ -9,15 +9,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.mobil_project.data.entities.Product
 
+// ProductsList.kt
 @Composable
-fun ProductsList(products: List<Product>, onNavigateToDetails: (String) -> Unit) {
+fun ProductsList(
+    products: List<Product>,
+    onNavigateToDetails: (String) -> Unit,
+    onAddToCart: (Product) -> Unit // ✅ NEW
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {
         items(products) { product ->
-            ProductItem(product = product, onNavigateToDetails = onNavigateToDetails)
+            ProductItem(
+                product = product,
+                onNavigateToDetails = onNavigateToDetails,
+                onAddToCartClick = onAddToCart // ✅ Forwarded
+            )
         }
     }
 }
+
