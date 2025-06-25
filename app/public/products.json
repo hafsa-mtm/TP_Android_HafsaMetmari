@@ -1,74 +1,26 @@
 [
   {
-    "productId": "REFAZER",
-    "title": "Tablette SAM 12 Pouce",
-    "description": "Description du produit",
-    "price": 2334.0,
-    "quantity": 10,
-    "imageRes": "samsung_tab_12"
+    "productId": "HP001",
+    "title": "Wireless Headphones",
+    "description": "Premium noise-cancelling wireless headphones",
+    "price": 199.99,
+    "quantity": 15,
+    "imageRes": "headphon"
   },
   {
-    "productId": "EFRRR",
-    "title": "IPhone 14",
-    "description": "Description du produit",
-    "price": 11000.0,
-    "quantity": 5,
-    "imageRes": "iphone_14"
-  },
-  {
-    "productId": "SQZEE",
-    "title": "Smart TV 48 Pouce",
-    "description": "Description du produit",
-    "price": 8000.0,
-    "quantity": 7,
-    "imageRes": "tv_samsung_48"
-  },
-  {
-    "productId": "RIFAZER",
-    "title": "Tablette SAM 12 Pouce",
-    "description": "Description du produit",
-    "price": 2334.0,
+    "productId": "LT002",
+    "title": "Ultrabook Laptop",
+    "description": "Thin and lightweight laptop with 12-hour battery",
+    "price": 899.99,
     "quantity": 8,
-    "imageRes": "samsung_tab_12"
+    "imageRes": "laptop"
   },
   {
-    "productId": "RTVVV",
-    "title": "IPhone 14",
-    "description": "Description du produit",
-    "price": 11000.0,
-    "quantity": 6,
-    "imageRes": "iphone_14"
-  },
-  {
-    "productId": "SQPEE",
-    "title": "Smart TV 48 Pouce",
-    "description": "Description du produit",
-    "price": 8000.0,
-    "quantity": 9,
-    "imageRes": "tv_samsung_48"
-  },
-  {
-    "productId": "RTRAZE",
-    "title": "Tablette SAM 12 Pouce",
-    "description": "Description du produit",
-    "price": 2334.0,
-    "quantity": 11,
-    "imageRes": "samsung_tab_12"
-  },
-  {
-    "productId": "SVZEE",
-    "title": "Smart TV 48 Pouce",
-    "description": "Description du produit",
-    "price": 8000.0,
-    "quantity": 4,
-    "imageRes": "tv_samsung_48"
-  },
-  {
-    "productId": "RURETR",
-    "title": "Tablette SAM 12 Pouce",
-    "description": "Description du produit",
-    "price": 2334.0,
-    "quantity": 12,
-    "imageRes": "samsung_tab_12"
+    "productId": "MS003",
+    "title": "Ergonomic Mouse",
+    "description": "Wireless mouse with ergonomic design",
+    "price": 49.99,
+    "quantity": 20,
+    "imageRes": "mouse"
   }
 ]

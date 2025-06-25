@@ -1,3 +1,4 @@
+// ui_product/product/component/ProductItem.kt
 package com.example.mobil_project.ui_product.product.component
 
 import androidx.compose.foundation.Image
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.mobil_project.R
 import com.example.mobil_project.data.entities.Product
 
 @Composable
@@ -28,11 +30,17 @@ fun ProductItem(product: Product, onNavigateToDetails: (String) -> Unit) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
+            // Map image names to actual drawable resources
+            val imageRes = when (product.imageName) {
+                "samsung_tab_12" -> R.drawable.headphon
+                "iphone_14" -> R.drawable.laptop
+                "tv_samsung_48" -> R.drawable.mouse
+                else -> null
+            }
 
-            // Show image if available
-            product.imageResId?.let { imageRes ->
+            imageRes?.let {
                 Image(
-                    painter = painterResource(id = imageRes),
+                    painter = painterResource(id = it),
                     contentDescription = product.title,
                     modifier = Modifier
                         .size(150.dp)

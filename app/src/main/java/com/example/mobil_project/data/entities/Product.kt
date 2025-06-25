@@ -1,18 +1,19 @@
+// data/entities/Product.kt
 package com.example.mobil_project.data.entities
-import androidx.annotation.DrawableRes
+
 import com.google.gson.annotations.SerializedName
 
 data class Product(
-    @SerializedName("productID")
+    @SerializedName("productId")
     val productId: String,
-    @SerializedName("productTitle")
+    @SerializedName("title")
     val title: String? = null,
-    @SerializedName("productDescription")
+    @SerializedName("description")
     val description: String? = null,
-    @SerializedName("productPrice")
-    val price: Double? = null,       // Price as a number (nullable)
-    @SerializedName("productQuantity")
-    val quantity: Int? = null, // Quantity as integer (nullable)
-    @SerializedName("productImageResId")
-    @DrawableRes val imageResId: Int? = null
+    @SerializedName("price")
+    val price: Double? = null,
+    @SerializedName("quantity")
+    val quantity: Int? = null,
+    @SerializedName("imageRes")
+    val imageName: String? = null  // Changed to imageName
 )
