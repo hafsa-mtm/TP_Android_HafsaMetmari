@@ -1,4 +1,3 @@
-// ui_product/product/screens/HomeScreen.kt
 package com.example.mobil_project.ui_product.product.screens
 
 import androidx.compose.foundation.layout.*
@@ -9,6 +8,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mobil_project.auth.AuthManager
 import com.example.mobil_project.cart.CartManager
 import com.example.mobil_project.data.entities.CartItem
 import com.example.mobil_project.ui_product.product.ProductViewModel
@@ -24,6 +24,7 @@ fun HomeScreen(
     onLogout: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    val userId = AuthManager.getCurrentUserId()
 
     LaunchedEffect(Unit) {
         viewModel.handleIntent(ProductIntent.LoadProducts)
@@ -83,14 +84,19 @@ fun HomeScreen(
                         products = state.products,
                         onNavigateToDetails = onNavigateToDetails,
                         onAddToCart = { product ->
-                            CartManager.addItem(
-                                CartItem(
-                                    id = product.productId,
-                                    title = product.title ?: "No title",
-                                    price = product.price ?: 0.0,
-                                    imageName = product.imageName // ✅ This is the only change
+                            if (userId != null) {
+                                CartManager.addItem(
+                                    userId,
+                                    CartItem(
+                                        id = product.productId,
+                                        title = product.title ?: "No title",
+                                        price = product.price ?: 0.0,
+                                        imageName = product.imageName
+                                    )
                                 )
-                            )
+                            } else {
+                                // Optionally handle no logged-in user case
+                            }
                         }
                     )
                 }

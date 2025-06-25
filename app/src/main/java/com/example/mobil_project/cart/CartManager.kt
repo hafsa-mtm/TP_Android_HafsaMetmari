@@ -3,11 +3,11 @@ package com.example.mobil_project.cart
 // auth/CartManager.kt
 import com.example.mobil_project.data.entities.CartItem
 
-// cart/CartManager.kt
 object CartManager {
-    private val cartItems = mutableListOf<CartItem>()
+    private val userCarts = mutableMapOf<String, MutableList<CartItem>>()
 
-    fun addItem(item: CartItem) {
+    fun addItem(userId: String, item: CartItem) {
+        val cartItems = userCarts.getOrPut(userId) { mutableListOf() }
         val existingItem = cartItems.find { it.id == item.id }
         if (existingItem != null) {
             existingItem.quantity += item.quantity
@@ -16,17 +16,17 @@ object CartManager {
         }
     }
 
-    fun removeItem(itemId: String) {
-        cartItems.removeIf { it.id == itemId }
+    fun removeItem(userId: String, itemId: String) {
+        userCarts[userId]?.removeIf { it.id == itemId }
     }
 
-    fun getItems(): List<CartItem> = cartItems.toList()
+    fun getItems(userId: String): List<CartItem> = userCarts[userId]?.toList() ?: emptyList()
 
-    fun clearCart() {
-        cartItems.clear()
+    fun clearCart(userId: String) {
+        userCarts[userId]?.clear()
     }
 
-    fun totalAmount(): Double {
-        return cartItems.sumOf { it.price * it.quantity }
+    fun totalAmount(userId: String): Double {
+        return userCarts[userId]?.sumOf { it.price * it.quantity } ?: 0.0
     }
 }

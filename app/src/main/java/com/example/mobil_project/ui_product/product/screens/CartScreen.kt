@@ -1,4 +1,3 @@
-// ui_product/product/screens/CartScreen.kt
 package com.example.mobil_project.ui_product.product.screens
 
 import androidx.compose.foundation.Image
@@ -11,29 +10,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.mobil_project.R
+import com.example.mobil_project.auth.AuthManager
 import com.example.mobil_project.cart.CartManager
 import com.example.mobil_project.data.entities.CartItem
 
 @Composable
 fun CartScreen(onNavigateBack: () -> Unit) {
-    val cartItems = remember { mutableStateOf(CartManager.getItems()) }
+    val userId = AuthManager.getCurrentUserId()
+    var cartItems by remember { mutableStateOf(CartManager.getItems(userId)) }
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
     ) {
         Text("My Cart", style = MaterialTheme.typography.headlineSmall)
 
         Spacer(Modifier.height(16.dp))
 
-        if (cartItems.value.isEmpty()) {
+        if (cartItems.isEmpty()) {
             Text("Your cart is empty.")
         } else {
-            cartItems.value.forEach { item ->
+            cartItems.forEach { item ->
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
                     verticalAlignment = CenterVertically
                 ) {
-                    // Get the image resource
                     val imageRes = when (item.imageName) {
                         "headphon" -> R.drawable.headphon
                         "laptop" -> R.drawable.laptop
@@ -41,7 +45,6 @@ fun CartScreen(onNavigateBack: () -> Unit) {
                         else -> null
                     }
 
-                    // Show the image if available
                     imageRes?.let {
                         Image(
                             painter = painterResource(id = it),
@@ -50,15 +53,14 @@ fun CartScreen(onNavigateBack: () -> Unit) {
                         )
                     }
 
-                    // Text and remove button
                     Column(modifier = Modifier.weight(1f)) {
                         Text("${item.title} x${item.quantity}")
                         Text("${item.price * item.quantity} $")
                     }
 
                     Button(onClick = {
-                        CartManager.removeItem(item.id)
-                        cartItems.value = CartManager.getItems()
+                        CartManager.removeItem(userId, item.id)
+                        cartItems = CartManager.getItems(userId) // updated properly here
                     }) {
                         Text("Remove")
                     }
@@ -66,7 +68,7 @@ fun CartScreen(onNavigateBack: () -> Unit) {
             }
 
             Spacer(Modifier.height(16.dp))
-            Text("Total: ${CartManager.totalAmount()} $")
+            Text("Total: ${CartManager.totalAmount(userId)} $")
         }
 
         Spacer(Modifier.height(16.dp))

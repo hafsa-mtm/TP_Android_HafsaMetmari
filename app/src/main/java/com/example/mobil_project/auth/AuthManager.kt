@@ -10,7 +10,7 @@ object AuthManager {
             lastName = "Doe",
             age = 25,
             email = "test@example.com",
-            password = "123456" // Never store plain passwords in production!
+            password = "123456"
         )
     )
 
@@ -19,8 +19,7 @@ object AuthManager {
 
     fun login(email: String, password: String): Boolean {
         currentUser = users.find { user ->
-            user.email.equals(email, ignoreCase = true) &&
-                    user.password == password
+            user.email.equals(email, ignoreCase = true) && user.password == password
         }
         return currentUser != null
     }
@@ -46,7 +45,7 @@ object AuthManager {
         )
         return true
     }
-    // auth/AuthManager.kt
+
     fun isAdmin(): Boolean {
         return currentUser?.email?.endsWith("@admin.com") == true
     }
@@ -55,4 +54,8 @@ object AuthManager {
         currentUser = null
     }
 
+    // New helper to get current user id (email)
+    fun getCurrentUserId(): String {
+        return currentUser?.email ?: "guest"
+    }
 }
