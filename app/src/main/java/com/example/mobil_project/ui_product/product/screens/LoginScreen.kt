@@ -1,5 +1,6 @@
 // ui/LoginScreen.kt
 package com.example.mobil_project.ui_product.product.screens
+
 import com.example.mobil_project.auth.AuthManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -13,7 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun LoginScreen(
-    onLoginSuccess: () -> Unit,
+    onLoginSuccess: (isAdmin: Boolean) -> Unit,
     onNavigateToSignUp: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
@@ -63,7 +64,11 @@ fun LoginScreen(
                 error = false
                 val success = AuthManager.login(email, password)
                 isLoading = false
-                if (success) onLoginSuccess() else error = true
+                if (success) {
+                    onLoginSuccess(AuthManager.isAdmin())
+                } else {
+                    error = true
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()

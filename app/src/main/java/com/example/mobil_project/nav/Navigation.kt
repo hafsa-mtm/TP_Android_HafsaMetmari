@@ -11,6 +11,7 @@ import com.example.mobil_project.ui_product.product.component.DetailsScreen
 import com.example.mobil_project.ui_product.product.screens.HomeScreen
 import com.example.mobil_project.ui_product.product.screens.LoginScreen
 import com.example.mobil_project.ui_product.product.screens.SignUpScreen
+import com.example.mobil_project.ui_product.product.screens.admin.AdminDashboard
 
 // nav/AppNavigation.kt
 @Composable
@@ -22,10 +23,21 @@ fun AppNavigation(
     NavHost(navController, startDestination) {
         composable("login") {
             LoginScreen(
-                onLoginSuccess = { navController.navigate("home") },
+                onLoginSuccess = { isAdmin ->
+                    if (isAdmin) {
+                        navController.navigate("admin_dashboard") {
+                            popUpTo("login") { inclusive = true }
+                        }
+                    } else {
+                        navController.navigate("home") {
+                            popUpTo("login") { inclusive = true }
+                        }
+                    }
+                },
                 onNavigateToSignUp = { navController.navigate("signup") }
             )
         }
+
 
         composable("signup") {
             SignUpScreen(
@@ -36,7 +48,6 @@ fun AppNavigation(
                 onNavigateToLogin = { navController.navigate("login") }
             )
         }
-
         composable("home") {
             HomeScreen(
                 viewModel = productViewModel,
@@ -49,5 +60,14 @@ fun AppNavigation(
                 }
             )
         }
+        composable("admin_dashboard") {
+            AdminDashboard(onLogout = {
+                AuthManager.logout()
+                navController.navigate("login") {
+                    popUpTo("admin_dashboard") { inclusive = true }
+                }
+            })
+        }
+
     }
 }

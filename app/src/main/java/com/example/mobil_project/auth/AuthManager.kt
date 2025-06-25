@@ -46,8 +46,13 @@ object AuthManager {
         )
         return true
     }
+    // auth/AuthManager.kt
+    fun isAdmin(): Boolean {
+        return currentUser?.email?.endsWith("@admin.com") == true
+    }
 
     fun logout() {
         currentUser = null
     }
+
 }
