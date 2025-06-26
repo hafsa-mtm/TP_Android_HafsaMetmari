@@ -21,7 +21,7 @@ object OrderManager {
         return order
     }
 
-
+    fun getAllOrders(): List<Order> = orders.toList()
     fun getOrdersForUser(userId: String): List<Order> {
         return orders.filter { it.userId == userId }
     }
