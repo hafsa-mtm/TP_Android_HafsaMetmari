@@ -16,6 +16,8 @@ import com.example.mobil_project.ui_product.product.screens.OrderScreen
 import com.example.mobil_project.ui_product.product.screens.SignUpScreen
 import com.example.mobil_project.ui_product.product.screens.admin.AdminDashboard
 import com.example.mobil_project.ui_product.product.screens.ProfileScreen
+import com.example.mobil_project.ui_product.product.screens.admin.UsersManagementScreen
+
 // nav/AppNavigation.kt
 @Composable
 fun AppNavigation(
@@ -109,12 +111,31 @@ fun AppNavigation(
 
 
         composable("admin_dashboard") {
-            AdminDashboard(onLogout = {
-                AuthManager.logout()
-                navController.navigate("login") {
-                    popUpTo("admin_dashboard") { inclusive = true }
+            AdminDashboard(
+                onLogout = {
+                    AuthManager.logout()
+                    navController.navigate("login") {
+                        popUpTo("admin_dashboard") { inclusive = true }
+                    }
+                },
+                onNavigateToUsers = {
+                    navController.navigate("admin_users")
+                },
+                onNavigateToOrders = {
+                    navController.navigate("admin_orders")
+                },
+                onNavigateToProducts = {
+                    navController.navigate("admin_products")
+                },
+                onNavigateToProfile = {      // <-- new navigation lambda
+                    navController.navigate("profile")
                 }
-            })
+            )
+        }
+        composable("admin_users") {
+            UsersManagementScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
     }
-}
+    }

@@ -13,6 +13,33 @@ object AuthManager {
             password = "123456"
         )
     )
+    // AuthManager.kt additions
+
+    fun getAllUsers(): List<User> = users.toList()
+
+    fun addUser(user: User) {
+        users.add(user)
+    }
+
+    fun updateUserAt(index: Int, updatedUser: User) {
+        if (index in users.indices) {
+            users[index] = updatedUser
+            // If the updated user is the currentUser, update currentUser reference too
+            if (currentUser?.email == updatedUser.email) {
+                currentUser = updatedUser
+            }
+        }
+    }
+
+    fun deleteUserAt(index: Int) {
+        if (index in users.indices) {
+            // If deleting current user, logout
+            if (currentUser?.email == users[index].email) {
+                logout()
+            }
+            users.removeAt(index)
+        }
+    }
 
     var currentUser: User? = null
         private set
