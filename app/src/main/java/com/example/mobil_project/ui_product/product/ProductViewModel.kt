@@ -34,6 +34,9 @@ class ProductViewModel @Inject constructor(
             is ProductIntent.FilterByCategory -> {
                 filterProducts(intent.category)
             }
+            is ProductIntent.AddToCart -> {
+                addToCart(intent.productId, intent.quantity)
+            }
         }
     }
 
@@ -54,6 +57,18 @@ class ProductViewModel @Inject constructor(
                 error = e.message ?: "Error fetching products"
             )
         }
+    }
+    private fun addToCart(productId: String, quantity: Int) {
+        val updatedProducts = allProducts.map { product ->
+            if (product.productId == productId && product.quantity != null) {
+                product.copy(quantity = (product.quantity - quantity).coerceAtLeast(0))
+            } else {
+                product
+            }
+        }
+
+        allProducts = updatedProducts
+        _state.value = _state.value.copy(products = updatedProducts, allProducts = updatedProducts)
     }
 
     private fun filterProducts(category: String) {

@@ -101,6 +101,8 @@ fun HomeScreen(
                                         imageName = product.imageName
                                     )
                                 )
+                                // ✅ Trigger quantity change
+                                viewModel.handleIntent(ProductIntent.AddToCart(product.productId, 1))
                             }
                         }
                     )
