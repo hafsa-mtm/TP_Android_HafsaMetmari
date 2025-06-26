@@ -24,13 +24,7 @@ object AuthManager {
         return currentUser != null
     }
 
-    fun signUp(
-        firstName: String,
-        lastName: String,
-        age: Int,
-        email: String,
-        password: String
-    ): Boolean {
+    fun signUp(firstName: String, lastName: String, age: Int, email: String, password: String): Boolean {
         if (users.any { it.email.equals(email, ignoreCase = true) }) {
             return false
         }
@@ -46,6 +40,23 @@ object AuthManager {
         return true
     }
 
+    fun updateUser(firstName: String, lastName: String, age: Int, password: String) {
+        currentUser?.let { user ->
+            val index = users.indexOfFirst { it.email.equals(user.email, ignoreCase = true) }
+            if (index != -1) {
+                val updatedUser = User(
+                    firstName = firstName,
+                    lastName = lastName,
+                    age = age,
+                    email = user.email,
+                    password = password
+                )
+                users[index] = updatedUser
+                currentUser = updatedUser
+            }
+        }
+    }
+
     fun isAdmin(): Boolean {
         return currentUser?.email?.endsWith("@admin.com") == true
     }
@@ -54,7 +65,6 @@ object AuthManager {
         currentUser = null
     }
 
-    // New helper to get current user id (email)
     fun getCurrentUserId(): String {
         return currentUser?.email ?: "guest"
     }

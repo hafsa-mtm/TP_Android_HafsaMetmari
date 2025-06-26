@@ -15,7 +15,7 @@ import com.example.mobil_project.ui_product.product.screens.LoginScreen
 import com.example.mobil_project.ui_product.product.screens.OrderScreen
 import com.example.mobil_project.ui_product.product.screens.SignUpScreen
 import com.example.mobil_project.ui_product.product.screens.admin.AdminDashboard
-
+import com.example.mobil_project.ui_product.product.screens.ProfileScreen
 // nav/AppNavigation.kt
 @Composable
 fun AppNavigation(
@@ -50,13 +50,18 @@ fun AppNavigation(
                 onNavigateToLogin = { navController.navigate("login") }
             )
         }
-
+        composable("profile") {
+            ProfileScreen(onNavigateBack = {
+                navController.popBackStack()
+            })
+        }
         composable("home") {
             HomeScreen(
                 viewModel = productViewModel,
                 onNavigateToDetails = { productId -> navController.navigate("productDetails/${productId}") },
                 onNavigateToCart = { navController.navigate("cart") },
                 onNavigateToOrders = { navController.navigate("orders") },
+                onNavigateToProfile = { navController.navigate("profile") },
                 onLogout = {
                     AuthManager.logout()
                     navController.navigate("login") {

@@ -22,6 +22,7 @@ fun HomeScreen(
     onNavigateToDetails: (String) -> Unit,
     onNavigateToCart: () -> Unit,
     onNavigateToOrders: () -> Unit,
+    onNavigateToProfile: () -> Unit,
     onLogout: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
@@ -51,7 +52,10 @@ fun HomeScreen(
                     Text("My Cart")
                 }
                 TextButton(onClick = onNavigateToOrders) {
-                    Text("My Orders") // ✅ Corrected
+                    Text("My Orders")
+                }
+                TextButton(onClick = onNavigateToProfile) {
+                    Text("Profile")
                 }
                 TextButton(onClick = onLogout) {
                     Text("Logout")
@@ -67,7 +71,6 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(8.dp)
         ) {
-            // 🔍 Filter Bar
             FilterBar(viewModel = viewModel)
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -98,8 +101,6 @@ fun HomeScreen(
                                         imageName = product.imageName
                                     )
                                 )
-                            } else {
-                                // Optionally handle no logged-in user case
                             }
                         }
                     )
