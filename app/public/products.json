@@ -25,5 +25,14 @@
     "quantity": 20,
     "category": "Accessories",
     "imageRes": "mouse"
+  },
+  {
+    "productId": "MS003",
+    "title": "Ergonomic Mouse",
+    "description": "Wireless mouse with ergonomic design",
+    "price": 49.99,
+    "quantity": 20,
+    "category": "Accessories",
+    "imageRes": "mouse"
   }
 ]

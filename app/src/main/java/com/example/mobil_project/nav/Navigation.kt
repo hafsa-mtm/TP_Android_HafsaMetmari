@@ -17,6 +17,7 @@ import com.example.mobil_project.ui_product.product.screens.SignUpScreen
 import com.example.mobil_project.ui_product.product.screens.admin.AdminDashboard
 import com.example.mobil_project.ui_product.product.screens.ProfileScreen
 import com.example.mobil_project.ui_product.product.screens.admin.AdminOrdersScreen
+import com.example.mobil_project.ui_product.product.screens.admin.AdminProductsScreen
 import com.example.mobil_project.ui_product.product.screens.admin.UsersManagementScreen
 
 // nav/AppNavigation.kt
@@ -83,6 +84,12 @@ fun AppNavigation(
         composable("productDetails/{productId}") { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId") ?: ""
             DetailsScreen(productId = productId, viewModel = productViewModel)
+        }
+        composable("admin_products") {
+            AdminProductsScreen(
+                viewModel = productViewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
 
         composable("cart") {

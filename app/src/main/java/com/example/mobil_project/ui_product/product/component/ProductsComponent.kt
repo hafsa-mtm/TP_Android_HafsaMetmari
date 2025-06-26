@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.mobil_project.data.entities.Product
+import com.example.mobil_project.data.entities.ProductItem
 
 // ProductsList.kt
 @Composable
