@@ -11,8 +11,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mobil_project.auth.AuthManager
 import com.example.mobil_project.cart.CartManager
 import com.example.mobil_project.data.entities.CartItem
-import com.example.mobil_project.ui_product.product.ProductViewModel
 import com.example.mobil_project.ui_product.product.ProductIntent
+import com.example.mobil_project.ui_product.product.ProductViewModel
 import com.example.mobil_project.ui_product.product.component.FilterBar
 import com.example.mobil_project.ui_product.product.component.ProductsList
 
@@ -21,6 +21,7 @@ fun HomeScreen(
     viewModel: ProductViewModel = viewModel(),
     onNavigateToDetails: (String) -> Unit,
     onNavigateToCart: () -> Unit,
+    onNavigateToOrders: () -> Unit,
     onLogout: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
@@ -48,6 +49,9 @@ fun HomeScreen(
             Row {
                 TextButton(onClick = onNavigateToCart) {
                     Text("My Cart")
+                }
+                TextButton(onClick = onNavigateToOrders) {
+                    Text("My Orders") // ✅ Corrected
                 }
                 TextButton(onClick = onLogout) {
                     Text("Logout")

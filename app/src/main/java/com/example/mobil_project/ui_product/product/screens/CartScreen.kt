@@ -15,7 +15,10 @@ import com.example.mobil_project.cart.CartManager
 import com.example.mobil_project.data.entities.CartItem
 
 @Composable
-fun CartScreen(onNavigateBack: () -> Unit) {
+fun CartScreen(
+    onNavigateBack: () -> Unit,
+    onNavigateToConfirm: () -> Unit // ✅ New callback
+) {
     val userId = AuthManager.getCurrentUserId()
     var cartItems by remember { mutableStateOf(CartManager.getItems(userId)) }
 
@@ -60,11 +63,14 @@ fun CartScreen(onNavigateBack: () -> Unit) {
 
                     Button(onClick = {
                         CartManager.removeItem(userId, item.id)
-                        cartItems = CartManager.getItems(userId) // updated properly here
+                        cartItems = CartManager.getItems(userId) // Refresh
                     }) {
                         Text("Remove")
                     }
                 }
+            }
+            Button(onClick = onNavigateToConfirm) {
+                Text("Proceed to Checkout")
             }
 
             Spacer(Modifier.height(16.dp))

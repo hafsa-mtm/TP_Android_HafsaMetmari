@@ -9,8 +9,10 @@ import com.example.mobil_project.auth.AuthManager
 import com.example.mobil_project.ui_product.product.ProductViewModel
 import com.example.mobil_project.ui_product.product.component.DetailsScreen
 import com.example.mobil_project.ui_product.product.screens.CartScreen
+import com.example.mobil_project.ui_product.product.screens.ConfirmOrderScreen
 import com.example.mobil_project.ui_product.product.screens.HomeScreen
 import com.example.mobil_project.ui_product.product.screens.LoginScreen
+import com.example.mobil_project.ui_product.product.screens.OrderScreen
 import com.example.mobil_project.ui_product.product.screens.SignUpScreen
 import com.example.mobil_project.ui_product.product.screens.admin.AdminDashboard
 
@@ -52,10 +54,9 @@ fun AppNavigation(
         composable("home") {
             HomeScreen(
                 viewModel = productViewModel,
-                onNavigateToDetails = { productId ->
-                    navController.navigate("productDetails/${productId}")
-                },
+                onNavigateToDetails = { productId -> navController.navigate("productDetails/${productId}") },
                 onNavigateToCart = { navController.navigate("cart") },
+                onNavigateToOrders = { navController.navigate("orders") },
                 onLogout = {
                     AuthManager.logout()
                     navController.navigate("login") {
@@ -65,16 +66,42 @@ fun AppNavigation(
             )
         }
 
+
         composable("productDetails/{productId}") { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId") ?: ""
             DetailsScreen(productId = productId, viewModel = productViewModel)
         }
 
         composable("cart") {
-            CartScreen(onNavigateBack = {
+            CartScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToConfirm = {
+                    navController.navigate("confirm_order") // ✅ Navigation works
+                }
+            )
+        }
+
+        // In AppNavigation.kt
+        composable("orders") {
+            OrderScreen(onNavigateBack = {
                 navController.popBackStack()
             })
         }
+        composable("confirm_order") {
+            ConfirmOrderScreen(
+                onOrderPlaced = {
+                    navController.navigate("orders") {
+                        popUpTo("home") { inclusive = false }
+                    }
+                },
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
 
         composable("admin_dashboard") {
             AdminDashboard(onLogout = {

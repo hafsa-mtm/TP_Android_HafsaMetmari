@@ -15,6 +15,18 @@ object CartManager {
             cartItems.add(item)
         }
     }
+    fun validateCartItems(cartItems: List<CartItem>): List<String> {
+        val errors = mutableListOf<String>()
+        for (item in cartItems) {
+            if (item.quantity <= 0) {
+                errors.add("${item.title} has invalid quantity.")
+            }
+        }
+        if (cartItems.isEmpty()) {
+            errors.add("Cart is empty.")
+        }
+        return errors
+    }
 
     fun removeItem(userId: String, itemId: String) {
         userCarts[userId]?.removeIf { it.id == itemId }
