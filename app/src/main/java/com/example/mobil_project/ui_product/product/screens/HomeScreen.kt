@@ -15,7 +15,24 @@ import com.example.mobil_project.ui_product.product.ProductIntent
 import com.example.mobil_project.ui_product.product.ProductViewModel
 import com.example.mobil_project.ui_product.product.component.FilterBar
 import com.example.mobil_project.ui_product.product.component.ProductsList
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material.icons.filled.List
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: ProductViewModel = viewModel(),
@@ -32,59 +49,135 @@ fun HomeScreen(
         viewModel.handleIntent(ProductIntent.LoadProducts)
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        // 🔵 App Bar
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "TechNova",
-                style = MaterialTheme.typography.headlineSmall
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        "TechNova",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    titleContentColor = MaterialTheme.colorScheme.primary
+                ),
+                actions = {
+                    IconButton(onClick = onNavigateToCart) {
+                        BadgedBox(badge = {
+                            val cartCount = CartManager.getItems(userId).size
+                            if (cartCount > 0) {
+                                Badge {
+                                    Text(cartCount.toString())
+                                }
+                            }
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.ShoppingCart,
+                                contentDescription = "Cart"
+                            )
+                        }
+                    }
+                }
             )
-            Row {
-                TextButton(onClick = onNavigateToCart) {
-                    Text("My Cart")
-                }
-                TextButton(onClick = onNavigateToOrders) {
-                    Text("My Orders")
-                }
-                TextButton(onClick = onNavigateToProfile) {
-                    Text("Profile")
-                }
-                TextButton(onClick = onLogout) {
-                    Text("Logout")
-                }
+        },
+        bottomBar = {
+            NavigationBar(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                tonalElevation = 8.dp
+            ) {
+                NavigationBarItem(
+                    selected = true,
+                    onClick = {},
+                    icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
+                    label = { Text("Home") }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = onNavigateToCart,
+                    icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Cart") },
+                    label = { Text("Cart") }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = onNavigateToOrders,
+                    icon = { Icon(Icons.Default.List, contentDescription = "Orders") },
+                    label = { Text("Orders") }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = onNavigateToProfile,
+                    icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
+                    label = { Text("Profile") }
+                )
             }
         }
-
-        Divider()
-
-        // Main Content
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp)
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp)
         ) {
-            FilterBar(viewModel = viewModel)
+            // Search/Filter Section
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                elevation = CardDefaults.cardElevation(4.dp)
+            ) {
+                FilterBar(
+                    viewModel = viewModel,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            // Products Section
             when {
                 state.isLoading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(CenterHorizontally))
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
                 state.error != null -> {
-                    Text(
-                        text = "Error: ${state.error}",
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.align(CenterHorizontally)
-                    )
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Text(
+                            text = "Error loading products: ${state.error}",
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                }
+                state.products.isEmpty() -> {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Column(
+                            modifier = Modifier.align(Alignment.Center),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,  // or Icons.Default.Search
+                                contentDescription = "No products",
+                                modifier = Modifier.size(48.dp),
+                                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                "No products found",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(
+                                "Try adjusting your filters",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            )
+                        }
+                    }
                 }
                 else -> {
                     ProductsList(
@@ -101,7 +194,6 @@ fun HomeScreen(
                                         imageName = product.imageName
                                     )
                                 )
-                                // ✅ Trigger quantity change
                                 viewModel.handleIntent(ProductIntent.AddToCart(product.productId, 1))
                             }
                         }

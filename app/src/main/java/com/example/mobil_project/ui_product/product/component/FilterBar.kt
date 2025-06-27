@@ -9,7 +9,7 @@ import com.example.mobil_project.ui_product.product.ProductIntent
 import com.example.mobil_project.ui_product.product.ProductViewModel
 
 @Composable
-fun FilterBar(viewModel: ProductViewModel) {
+fun FilterBar(viewModel: ProductViewModel , modifier: Modifier = Modifier) {
     val categories = listOf("All", "Laptops", "Accessories")
     val selectedCategory by viewModel.selectedCategory.collectAsState()
 
