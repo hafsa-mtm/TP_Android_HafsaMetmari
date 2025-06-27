@@ -35,6 +35,14 @@ fun DetailsScreen(productId: String, viewModel: ProductViewModel) {
                 "headphon" -> R.drawable.headphon
                 "laptop" -> R.drawable.laptop
                 "mouse" -> R.drawable.mouse
+                "hp_elite" -> R.drawable.hp_elite
+                "hp_elitebook" -> R.drawable.hp_elitebook
+                "hp_pavilion" -> R.drawable.hp_pavilion
+                "lenovo" -> R.drawable.lenovo
+                "lenovo_thinkpad" -> R.drawable.lenovo_thinkpad
+                "casque" -> R.drawable.casque
+                "impriment" -> R.drawable.impriment
+                "ecouteur" -> R.drawable.ecouteur
                 else -> null
             }
 

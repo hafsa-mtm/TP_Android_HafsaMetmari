@@ -52,7 +52,7 @@ fun CartScreen(
                         "lenovo_thinkpad" -> R.drawable.lenovo_thinkpad
                         "casque" -> R.drawable.casque
                         "impriment" -> R.drawable.impriment
-                        "Ecouteur" -> R.drawable.ecouteur
+                        "ecouteur" -> R.drawable.ecouteur
                         else -> null
                     }
 

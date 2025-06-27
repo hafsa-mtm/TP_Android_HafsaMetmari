@@ -96,7 +96,7 @@ fun OrderCard(
                     "lenovo_thinkpad" -> com.example.mobil_project.R.drawable.lenovo_thinkpad
                     "casque" -> com.example.mobil_project.R.drawable.casque
                     "impriment" -> com.example.mobil_project.R.drawable.impriment
-                    "Ecouteur" -> R.drawable.ecouteur
+                    "ecouteur" -> R.drawable.ecouteur
                     else -> null
                 }
                 Row(
