@@ -6,7 +6,7 @@ import com.example.mobil_project.data.entities.Order
 object OrderManager {
     private val orders = mutableListOf<Order>()
 
-    fun createOrder(userId: String, items: List<CartItem>, address: String, phoneNumber: String): Order {
+    fun createOrder(userId: String, items: List<CartItem>, address: String, phoneNumber: String ,paymentMethod: String): Order {
         val order = Order(
             id = System.currentTimeMillis().toString(),
             userId = userId,
@@ -15,7 +15,8 @@ object OrderManager {
             totalAmount = items.sumOf { it.price * it.quantity },
             date = System.currentTimeMillis(),
             address = address,
-            phoneNumber = phoneNumber
+            phoneNumber = phoneNumber,
+            paymentMethod = paymentMethod
         )
         orders.add(order)
         return order

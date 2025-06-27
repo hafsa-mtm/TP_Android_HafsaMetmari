@@ -1,6 +1,6 @@
-// MainActivity.kt
 package com.example.mobil_project
 
+import YourAppTheme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.mobil_project.auth.AuthManager
 import com.example.mobil_project.nav.AppNavigation
-import com.example.mobil_project.ui_product.Theme.Mobil_projectTheme
 import com.example.mobil_project.ui_product.product.ProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +24,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Mobil_projectTheme {
+            YourAppTheme {  // Changed from Mobil_projectTheme to YourAppTheme
                 Surface(modifier = Modifier.fillMaxSize()) {
                     AppRoot(productViewModel)
                 }

@@ -1,6 +1,10 @@
-// nav/AppNavigation.kt
 package com.example.mobil_project.nav
 
+import AdminDashboard
+import CartScreen
+import ConfirmOrderScreen
+import OrderScreen
+import ProfileScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -8,19 +12,11 @@ import androidx.navigation.compose.composable
 import com.example.mobil_project.auth.AuthManager
 import com.example.mobil_project.ui_product.product.ProductViewModel
 import com.example.mobil_project.ui_product.product.component.DetailsScreen
-import com.example.mobil_project.ui_product.product.screens.CartScreen
-import com.example.mobil_project.ui_product.product.screens.ConfirmOrderScreen
-import com.example.mobil_project.ui_product.product.screens.HomeScreen
-import com.example.mobil_project.ui_product.product.screens.LoginScreen
-import com.example.mobil_project.ui_product.product.screens.OrderScreen
-import com.example.mobil_project.ui_product.product.screens.SignUpScreen
-import com.example.mobil_project.ui_product.product.screens.admin.AdminDashboard
-import com.example.mobil_project.ui_product.product.screens.ProfileScreen
+import com.example.mobil_project.ui_product.product.screens.*
 import com.example.mobil_project.ui_product.product.screens.admin.AdminOrdersScreen
 import com.example.mobil_project.ui_product.product.screens.admin.AdminProductsScreen
 import com.example.mobil_project.ui_product.product.screens.admin.UsersManagementScreen
 
-// nav/AppNavigation.kt
 @Composable
 fun AppNavigation(
     navController: NavHostController,
@@ -54,15 +50,23 @@ fun AppNavigation(
                 onNavigateToLogin = { navController.navigate("login") }
             )
         }
+
         composable("profile") {
             ProfileScreen(
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToHome = { navController.navigate("home") },
                 onNavigateToCart = { navController.navigate("cart") },
                 onNavigateToOrders = { navController.navigate("orders") },
-                onNavigateToProfile = { /* Do nothing or scroll to top */ }
+                onNavigateToProfile = { /* Do nothing or scroll to top */ },
+                onLogoutClick = {
+                    AuthManager.logout()
+                    navController.navigate("login") {
+                        popUpTo("profile") { inclusive = true }
+                    }
+                }
             )
         }
+
         composable("home") {
             HomeScreen(
                 viewModel = productViewModel,
@@ -79,74 +83,58 @@ fun AppNavigation(
             )
         }
 
-        composable("admin_orders") {
-            AdminOrdersScreen(
-                onNavigateBack = { navController.popBackStack() }
-            )
-        }
-
         composable("productDetails/{productId}") { backStackEntry ->
-            val productId = backStackEntry.arguments?.getString("productId") ?: ""
-            DetailsScreen(
-                productId = productId,
-                viewModel = productViewModel,
+                DetailsScreen(
+                    productId = backStackEntry.arguments?.getString("productId") ?: "",
+                    viewModel = productViewModel,
+                    onNavigateToHome = { navController.navigate("home") },
+                    onNavigateToCart = { navController.navigate("cart") },
+                    onNavigateToOrders = { navController.navigate("orders") },
+                    onNavigateToProfile = { navController.navigate("profile") },
+                    onLogoutClick = {
+                        AuthManager.logout()
+                        navController.navigate("login") {
+                            popUpTo("productDetails/{productId}") { inclusive = true }
+                        }
+                    },
+                    userId = AuthManager.getCurrentUserId() ?: "",
+                    onBackClick = { navController.popBackStack() } // Added back navigation
+                )
+            }
+
+        composable("cart") {
+            CartScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToConfirm = { navController.navigate("confirm_order") },
                 onNavigateToHome = { navController.navigate("home") },
                 onNavigateToCart = { navController.navigate("cart") },
                 onNavigateToOrders = { navController.navigate("orders") },
                 onNavigateToProfile = { navController.navigate("profile") },
-                userId = AuthManager.getCurrentUserId() ?: ""
-            )
-        }
-        composable("admin_products") {
-            AdminProductsScreen(
-                viewModel = productViewModel,
-                onNavigateBack = { navController.popBackStack() }
-            )
-        }
-
-        composable("cart") {
-            CartScreen(
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-                onNavigateToConfirm = {
-                    navController.navigate("confirm_order")
-                },
-                onNavigateToHome = {
-                    navController.navigate("home")
-                },
-                onNavigateToCart = {
-                    navController.navigate("cart")
-                },
-                onNavigateToOrders = {
-                    navController.navigate("orders")
-                },
-                onNavigateToProfile = {
-                    navController.navigate("profile")
+                onLogoutClick = {
+                    AuthManager.logout()
+                    navController.navigate("login") {
+                        popUpTo("cart") { inclusive = true }
+                    }
                 }
             )
         }
 
-
-        // In AppNavigation.kt
         composable("orders") {
             OrderScreen(
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
+                onNavigateBack = { navController.popBackStack() },
                 onNavigateToHome = {
                     navController.navigate("home") {
                         popUpTo("home") { inclusive = true }
                     }
                 },
-                onNavigateToCart = {
-                    navController.navigate("cart")
-                },
-                onNavigateToOrders = {
-                    // Since you're already on "orders", you can keep this empty or do nothing
-                },
-                onNavigateToProfile = {
-                    navController.navigate("profile")
+                onNavigateToCart = { navController.navigate("cart") },
+                onNavigateToOrders = { /* Do nothing */ },
+                onNavigateToProfile = { navController.navigate("profile") },
+                onLogoutClick = {
+                    AuthManager.logout()
+                    navController.navigate("login") {
+                        popUpTo("orders") { inclusive = true }
+                    }
                 }
             )
         }
@@ -158,25 +146,19 @@ fun AppNavigation(
                         popUpTo("home") { inclusive = false }
                     }
                 },
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-                onNavigateToHome = {
-                    navController.navigate("home")
-                },
-                onNavigateToCart = {
-                    navController.navigate("cart")
-                },
-                onNavigateToOrders = {
-                    navController.navigate("orders")
-                },
-                onNavigateToProfile = {
-                    navController.navigate("profile")
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToHome = { navController.navigate("home") },
+                onNavigateToCart = { navController.navigate("cart") },
+                onNavigateToOrders = { navController.navigate("orders") },
+                onNavigateToProfile = { navController.navigate("profile") },
+                onLogoutClick = {
+                    AuthManager.logout()
+                    navController.navigate("login") {
+                        popUpTo("confirm_order") { inclusive = true }
+                    }
                 }
             )
         }
-
-
 
         composable("admin_dashboard") {
             AdminDashboard(
@@ -186,24 +168,30 @@ fun AppNavigation(
                         popUpTo("admin_dashboard") { inclusive = true }
                     }
                 },
-                onNavigateToUsers = {
-                    navController.navigate("admin_users")
-                },
-                onNavigateToOrders = {
-                    navController.navigate("admin_orders")
-                },
-                onNavigateToProducts = {
-                    navController.navigate("admin_products")
-                },
-                onNavigateToProfile = {      // <-- new navigation lambda
-                    navController.navigate("profile")
-                }
+                onNavigateToUsers = { navController.navigate("admin_users") },
+                onNavigateToOrders = { navController.navigate("admin_orders") },
+                onNavigateToProducts = { navController.navigate("admin_products") },
+                onNavigateToProfile = { navController.navigate("profile") }
             )
         }
+
+        composable("admin_orders") {
+            AdminOrdersScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable("admin_products") {
+            AdminProductsScreen(
+                viewModel = productViewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
         composable("admin_users") {
             UsersManagementScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }
     }
-    }
+}

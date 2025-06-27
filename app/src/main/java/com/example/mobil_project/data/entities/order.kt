@@ -8,6 +8,7 @@ data class Order(
     val totalAmount: Double,
     val date: Long,
     val address: String,
+    val paymentMethod: String,
     val phoneNumber: String
 )
 

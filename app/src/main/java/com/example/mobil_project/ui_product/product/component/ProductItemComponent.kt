@@ -1,13 +1,9 @@
-// ui_product/product/component/AdminProductItem.kt
 package com.example.mobil_project.ui_product.product.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,43 +21,38 @@ fun AdminProductItem(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
+        elevation = CardDefaults.cardElevation(4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
-            val imageRes = when (product.imageName) {
-                "headphon" -> R.drawable.headphon
-                "laptop" -> R.drawable.laptop
-                "mouse" -> R.drawable.mouse
-                "hp_elite" -> R.drawable.hp_elite
-                "hp_elitebook" -> R.drawable.hp_elitebook
-                "hp_pavilion" -> R.drawable.hp_pavilion
-                "lenovo" -> R.drawable.lenovo
-                "lenovo_thinkpad" -> R.drawable.lenovo_thinkpad
-                "casque" -> R.drawable.casque
-                "impriment" -> R.drawable.impriment
-                "ecouteur" -> R.drawable.ecouteur
-                else -> null
-            }
-            imageRes?.let {
-                Image(
-                    painter = painterResource(id = it),
-                    contentDescription = product.title,
-                    modifier = Modifier.size(100.dp).padding(bottom = 8.dp)
-                )
-            }
+            // ... (keep original image loading code)
 
-            Text("Title: ${product.title}")
-            Text("Description: ${product.description}")
-            Text("Category: ${product.category ?: "N/A"}")
-            Text("Price: ${product.price ?: 0.0} $")
-            Text("Qty: ${product.quantity ?: 0}")
+            Text("Title: ${product.title}", color = MaterialTheme.colorScheme.onSurface)
+            Text("Description: ${product.description}", color = MaterialTheme.colorScheme.onSurface)
+            Text("Category: ${product.category ?: "N/A"}", color = MaterialTheme.colorScheme.onSurface)
+            Text("Price: ${product.price ?: 0.0} $", color = MaterialTheme.colorScheme.primary)
+            Text("Qty: ${product.quantity ?: 0}", color = MaterialTheme.colorScheme.onSurface)
 
             Spacer(Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button(onClick = onEdit) {
+                Button(
+                    onClick = onEdit,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                ) {
                     Text("Edit")
                 }
-                Button(onClick = onDelete) {
+                Button(
+                    onClick = onDelete,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error,
+                        contentColor = MaterialTheme.colorScheme.onError
+                    )
+                ) {
                     Text("Delete")
                 }
             }

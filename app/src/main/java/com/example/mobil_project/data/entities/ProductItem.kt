@@ -14,14 +14,17 @@ import com.example.mobil_project.R
 fun ProductItem(
     product: Product,
     onNavigateToDetails: (String) -> Unit,
-    onAddToCartClick: (Product) -> Unit    // new callback
+    onAddToCartClick: (Product) -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
             // Map image names to actual drawable resources
@@ -50,16 +53,34 @@ fun ProductItem(
                 )
             }
 
-            Text(text = "Title: ${product.title}")
-            Text(text = "Description: ${product.description}")
+            Text(
+                text = "Title: ${product.title}",
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = "Description: ${product.description}",
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+            )
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Button(onClick = { onNavigateToDetails(product.productId) }) {
-                    Text(text = "Plus de détails...")
+                Button(
+                    onClick = { onNavigateToDetails(product.productId) },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                ) {
+                    Text(text = "details...")
                 }
-                Button(onClick = { onAddToCartClick(product) }) {
+                Button(
+                    onClick = { onAddToCartClick(product) },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                ) {
                     Text(text = "Add to Cart")
                 }
             }
