@@ -55,9 +55,13 @@ fun AppNavigation(
             )
         }
         composable("profile") {
-            ProfileScreen(onNavigateBack = {
-                navController.popBackStack()
-            })
+            ProfileScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToHome = { navController.navigate("home") },
+                onNavigateToCart = { navController.navigate("cart") },
+                onNavigateToOrders = { navController.navigate("orders") },
+                onNavigateToProfile = { /* Do nothing or scroll to top */ }
+            )
         }
         composable("home") {
             HomeScreen(
@@ -83,7 +87,15 @@ fun AppNavigation(
 
         composable("productDetails/{productId}") { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId") ?: ""
-            DetailsScreen(productId = productId, viewModel = productViewModel)
+            DetailsScreen(
+                productId = productId,
+                viewModel = productViewModel,
+                onNavigateToHome = { navController.navigate("home") },
+                onNavigateToCart = { navController.navigate("cart") },
+                onNavigateToOrders = { navController.navigate("orders") },
+                onNavigateToProfile = { navController.navigate("profile") },
+                userId = AuthManager.getCurrentUserId() ?: ""
+            )
         }
         composable("admin_products") {
             AdminProductsScreen(
@@ -98,17 +110,47 @@ fun AppNavigation(
                     navController.popBackStack()
                 },
                 onNavigateToConfirm = {
-                    navController.navigate("confirm_order") // ✅ Navigation works
+                    navController.navigate("confirm_order")
+                },
+                onNavigateToHome = {
+                    navController.navigate("home")
+                },
+                onNavigateToCart = {
+                    navController.navigate("cart")
+                },
+                onNavigateToOrders = {
+                    navController.navigate("orders")
+                },
+                onNavigateToProfile = {
+                    navController.navigate("profile")
                 }
             )
         }
 
+
         // In AppNavigation.kt
         composable("orders") {
-            OrderScreen(onNavigateBack = {
-                navController.popBackStack()
-            })
+            OrderScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToHome = {
+                    navController.navigate("home") {
+                        popUpTo("home") { inclusive = true }
+                    }
+                },
+                onNavigateToCart = {
+                    navController.navigate("cart")
+                },
+                onNavigateToOrders = {
+                    // Since you're already on "orders", you can keep this empty or do nothing
+                },
+                onNavigateToProfile = {
+                    navController.navigate("profile")
+                }
+            )
         }
+
         composable("confirm_order") {
             ConfirmOrderScreen(
                 onOrderPlaced = {
@@ -118,9 +160,22 @@ fun AppNavigation(
                 },
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+                onNavigateToHome = {
+                    navController.navigate("home")
+                },
+                onNavigateToCart = {
+                    navController.navigate("cart")
+                },
+                onNavigateToOrders = {
+                    navController.navigate("orders")
+                },
+                onNavigateToProfile = {
+                    navController.navigate("profile")
                 }
             )
         }
+
 
 
         composable("admin_dashboard") {

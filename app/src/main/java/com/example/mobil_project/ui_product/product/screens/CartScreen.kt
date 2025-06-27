@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -13,81 +12,104 @@ import com.example.mobil_project.R
 import com.example.mobil_project.auth.AuthManager
 import com.example.mobil_project.cart.CartManager
 import com.example.mobil_project.data.entities.CartItem
+import com.example.mobil_project.ui_product.product.component.BottomBar
 
 @Composable
 fun CartScreen(
     onNavigateBack: () -> Unit,
-    onNavigateToConfirm: () -> Unit // ✅ New callback
+    onNavigateToConfirm: () -> Unit,
+    onNavigateToHome: () -> Unit,
+    onNavigateToCart: () -> Unit,
+    onNavigateToOrders: () -> Unit,
+    onNavigateToProfile: () -> Unit
 ) {
     val userId = AuthManager.getCurrentUserId()
     var cartItems by remember { mutableStateOf(CartManager.getItems(userId)) }
+    val cartCount = cartItems.sumOf { it.quantity }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-    ) {
-        Text("My Cart", style = MaterialTheme.typography.headlineSmall)
+    Scaffold(
+        bottomBar = {
+            BottomBar(
+                currentScreen = "cart",
+                onHomeClick = onNavigateToHome,
+                onCartClick = onNavigateToCart,
+                onOrdersClick = onNavigateToOrders,
+                onProfileClick = onNavigateToProfile,
+                cartItemCount = cartCount
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp),
+        ) {
+            Text("My Cart", style = MaterialTheme.typography.headlineSmall)
+            Spacer(Modifier.height(16.dp))
 
-        Spacer(Modifier.height(16.dp))
+            if (cartItems.isEmpty()) {
+                Text("Your cart is empty.")
+            } else {
+                cartItems.forEach { item ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        val imageRes = when (item.imageName) {
+                            "headphon" -> R.drawable.headphon
+                            "laptop" -> R.drawable.laptop
+                            "mouse" -> R.drawable.mouse
+                            "hp_elite" -> R.drawable.hp_elite
+                            "hp_elitebook" -> R.drawable.hp_elitebook
+                            "hp_pavilion" -> R.drawable.hp_pavilion
+                            "lenovo" -> R.drawable.lenovo
+                            "lenovo_thinkpad" -> R.drawable.lenovo_thinkpad
+                            "casque" -> R.drawable.casque
+                            "impriment" -> R.drawable.impriment
+                            "ecouteur" -> R.drawable.ecouteur
+                            else -> null
+                        }
 
-        if (cartItems.isEmpty()) {
-            Text("Your cart is empty.")
-        } else {
-            cartItems.forEach { item ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    verticalAlignment = CenterVertically
-                ) {
-                    val imageRes = when (item.imageName) {
-                        "headphon" -> R.drawable.headphon
-                        "laptop" -> R.drawable.laptop
-                        "mouse" -> R.drawable.mouse
-                        "hp_elite" -> R.drawable.hp_elite
-                        "hp_elitebook" -> R.drawable.hp_elitebook
-                        "hp_pavilion" -> R.drawable.hp_pavilion
-                        "lenovo" -> R.drawable.lenovo
-                        "lenovo_thinkpad" -> R.drawable.lenovo_thinkpad
-                        "casque" -> R.drawable.casque
-                        "impriment" -> R.drawable.impriment
-                        "ecouteur" -> R.drawable.ecouteur
-                        else -> null
-                    }
+                        imageRes?.let {
+                            Image(
+                                painter = painterResource(id = it),
+                                contentDescription = item.title,
+                                modifier = Modifier
+                                    .size(64.dp)
+                                    .padding(end = 8.dp)
+                            )
+                        }
 
-                    imageRes?.let {
-                        Image(
-                            painter = painterResource(id = it),
-                            contentDescription = item.title,
-                            modifier = Modifier.size(64.dp).padding(end = 8.dp)
-                        )
-                    }
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("${item.title} x${item.quantity}")
+                            Text("${item.price * item.quantity} $")
+                        }
 
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text("${item.title} x${item.quantity}")
-                        Text("${item.price * item.quantity} $")
-                    }
-
-                    Button(onClick = {
-                        CartManager.removeItem(userId, item.id)
-                        cartItems = CartManager.getItems(userId) // Refresh
-                    }) {
-                        Text("Remove")
+                        Button(onClick = {
+                            CartManager.removeItem(userId, item.id)
+                            cartItems = CartManager.getItems(userId) // Refresh
+                        }) {
+                            Text("Remove")
+                        }
                     }
                 }
-            }
-            Button(onClick = onNavigateToConfirm) {
-                Text("Proceed to Checkout")
+
+                Spacer(Modifier.height(8.dp))
+                Button(onClick = onNavigateToConfirm) {
+                    Text("Proceed to Checkout")
+                }
+
+                Spacer(Modifier.height(16.dp))
+                Text("Total: ${CartManager.totalAmount(userId)} $")
             }
 
             Spacer(Modifier.height(16.dp))
-            Text("Total: ${CartManager.totalAmount(userId)} $")
-        }
-
-        Spacer(Modifier.height(16.dp))
-        Button(onClick = onNavigateBack) {
-            Text("Back to Home")
+            Button(onClick = onNavigateBack) {
+                Text("Back to Home")
+            }
         }
     }
 }
