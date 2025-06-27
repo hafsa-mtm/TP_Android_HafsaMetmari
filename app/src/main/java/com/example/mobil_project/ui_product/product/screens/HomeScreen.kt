@@ -44,7 +44,7 @@ fun HomeScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Products",
+                text = "TechNova",
                 style = MaterialTheme.typography.headlineSmall
             )
             Row {

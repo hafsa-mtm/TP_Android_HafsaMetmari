@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.example.mobil_project.order.OrderManager
 import com.example.mobil_project.data.entities.Order
 import androidx.compose.material3.TextFieldDefaults
+import com.example.mobil_project.R
 
 @Composable
 fun AdminOrdersScreen(
@@ -88,6 +89,14 @@ fun OrderCard(
                     "headphon" -> com.example.mobil_project.R.drawable.headphon
                     "laptop" -> com.example.mobil_project.R.drawable.laptop
                     "mouse" -> com.example.mobil_project.R.drawable.mouse
+                    "hp_elite" -> com.example.mobil_project.R.drawable.hp_elite
+                    "hp_elitebook" -> com.example.mobil_project.R.drawable.hp_elitebook
+                    "hp_pavilion" -> com.example.mobil_project.R.drawable.hp_pavilion
+                    "lenovo" -> com.example.mobil_project.R.drawable.lenovo
+                    "lenovo_thinkpad" -> com.example.mobil_project.R.drawable.lenovo_thinkpad
+                    "casque" -> com.example.mobil_project.R.drawable.casque
+                    "impriment" -> com.example.mobil_project.R.drawable.impriment
+                    "Ecouteur" -> R.drawable.ecouteur
                     else -> null
                 }
                 Row(

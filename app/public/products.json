@@ -27,12 +27,75 @@
     "imageRes": "mouse"
   },
   {
-    "productId": "MS003",
-    "title": "Ergonomic Mouse",
-    "description": "Wireless mouse with ergonomic design",
-    "price": 49.99,
-    "quantity": 20,
+    "productId": "HP004",
+    "title": "HP Elite Dragonfly",
+    "description": "13.3\" business laptop with premium design",
+    "price": 1299.99,
+    "quantity": 5,
+    "category": "Laptops",
+    "imageRes": "hp_elite"
+  },
+  {
+    "productId": "HP005",
+    "title": "HP EliteBook 845 G8",
+    "description": "14\" professional laptop with AMD Ryzen",
+    "price": 1099.99,
+    "quantity": 7,
+    "category": "Laptops",
+    "imageRes": "hp_elitebook"
+  },
+  {
+    "productId": "HP006",
+    "title": "HP Pavilion Laptop 15.6\"",
+    "description": "Everyday laptop with full HD display",
+    "price": 699.99,
+    "quantity": 10,
+    "category": "Laptops",
+    "imageRes": "hp_pavilion"
+  },
+  {
+    "productId": "LN007",
+    "title": "Lenovo ThinkPad X1 Yoga",
+    "description": "Convertible business laptop with stylus",
+    "price": 1499.99,
+    "quantity": 4,
+    "category": "Laptops",
+    "imageRes": "lenovo"
+  },
+  {
+    "productId": "LN008",
+    "title": "Lenovo ThinkPad X1 Yoga Gen 5",
+    "description": "Latest generation convertible laptop",
+    "price": 1599.99,
+    "quantity": 3,
+    "category": "Laptops",
+    "imageRes": "lenovo_thinkpad"
+  },
+  {
+    "productId": "AC009",
+    "title": "Gaming Headset",
+    "description": "7.1 surround sound gaming headset",
+    "price": 79.99,
+    "quantity": 12,
     "category": "Accessories",
-    "imageRes": "mouse"
+    "imageRes": "casque"
+  },
+  {
+    "productId": "AC010",
+    "title": "Professional Printer",
+    "description": "High-speed office printer",
+    "price": 299.99,
+    "quantity": 6,
+    "category": "Accessories",
+    "imageRes": "impriment"
+  },
+  {
+    "productId": "AC011",
+    "title": "Bluetooth Earbuds",
+    "description": "Wireless earbuds with noise cancellation",
+    "price": 129.99,
+    "quantity": 18,
+    "category": "Accessories",
+    "imageRes": "ecouteur"
   }
 ]
