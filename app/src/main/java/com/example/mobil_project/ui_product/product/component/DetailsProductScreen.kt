@@ -10,6 +10,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.example.mobil_project.R
 import com.example.mobil_project.cart.CartManager
 import com.example.mobil_project.data.entities.CartItem
+import com.example.mobil_project.ui_product.product.ProductIntent
 import com.example.mobil_project.ui_product.product.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +41,9 @@ fun DetailsScreen(
     userId: String,
     onBackClick: () -> Unit
 ) {
-    val product = viewModel.state.value.products.find { it.productId == productId }
+    // Observe ViewModel state as Compose state to trigger recomposition on updates
+    val state by viewModel.state.collectAsState()
+    val product = state.products.find { it.productId == productId }
     val cartCount = CartManager.getItems(userId).size
 
     Scaffold(
@@ -217,7 +222,8 @@ fun DetailsScreen(
                                             imageName = product.imageName
                                         )
                                     )
-                                    onNavigateToCart()
+                                    viewModel.handleIntent(ProductIntent.AddToCart(product.productId, 1))
+                                    onBackClick()
                                 }
                             },
                             modifier = Modifier

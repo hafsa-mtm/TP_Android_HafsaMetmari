@@ -16,6 +16,6 @@ data class Product(
     val quantity: Int? = null,
     @SerializedName("imageRes")
     val imageName: String? = null,
-    @SerializedName("category")  // Add this new field
+    @SerializedName("category")
     val category: String? = null
 )

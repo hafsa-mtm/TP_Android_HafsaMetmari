@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MonApp</string>
+    <string name="profile_title">Mon Profil</string>
+    <string name="logout">Se Déconnecter</string>
+    <string name="save_changes">Enregistrer les Modifications</string>
+    <string name="add_user">Ajouter un Utilisateur</string>
+    <!-- Add French translations for all strings -->
+</resources>
