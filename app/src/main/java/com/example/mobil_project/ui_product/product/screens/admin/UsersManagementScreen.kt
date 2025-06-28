@@ -1,114 +1,26 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.mobil_project.ui_product.product.screens.admin
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.mobil_project.auth.AuthManager
 import com.example.mobil_project.data.entities.User
 
 @Composable
-fun UsersManagementScreen(
-    onNavigateBack: () -> Unit
-) {
-    var users by remember { mutableStateOf(AuthManager.getAllUsers()) }
-    var editingUserIndex by remember { mutableStateOf<Int?>(null) }
-    var showAddDialog by remember { mutableStateOf(false) }
-    var showEditDialog by remember { mutableStateOf(false) }
-    var showDeleteDialog by remember { mutableStateOf(false) }
-    var userToEdit by remember { mutableStateOf<User?>(null) }
-    var userToDeleteIndex by remember { mutableStateOf<Int?>(null) }
-
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text("Manage Users", style = MaterialTheme.typography.headlineMedium)
-        Spacer(Modifier.height(16.dp))
-
-        Button(onClick = { showAddDialog = true }, modifier = Modifier.fillMaxWidth()) {
-            Text("Add User")
-        }
-
-        Spacer(Modifier.height(16.dp))
-
-        LazyColumn(modifier = Modifier.weight(1f)) {
-            itemsIndexed(users) { index, user ->
-                UserRow(
-                    user = user,
-                    onEdit = {
-                        userToEdit = user
-                        editingUserIndex = index
-                        showEditDialog = true
-                    },
-                    onDelete = {
-                        userToDeleteIndex = index
-                        showDeleteDialog = true
-                    }
-                )
-                Divider()
-            }
-        }
-
-        Spacer(Modifier.height(16.dp))
-
-        Button(onClick = onNavigateBack, modifier = Modifier.fillMaxWidth()) {
-            Text("Back")
-        }
-    }
-
-    if (showAddDialog) {
-        UserDialog(
-            title = "Add User",
-            onDismiss = { showAddDialog = false },
-            onConfirm = { newUser ->
-                AuthManager.addUser(newUser)
-                users = AuthManager.getAllUsers()
-                showAddDialog = false
-            }
-        )
-    }
-
-    if (showEditDialog && userToEdit != null && editingUserIndex != null) {
-        UserDialog(
-            title = "Edit User",
-            user = userToEdit,
-            onDismiss = { showEditDialog = false },
-            onConfirm = { updatedUser ->
-                AuthManager.updateUserAt(editingUserIndex!!, updatedUser)
-                users = AuthManager.getAllUsers()
-                showEditDialog = false
-            }
-        )
-    }
-
-    if (showDeleteDialog && userToDeleteIndex != null) {
-        AlertDialog(
-            onDismissRequest = { showDeleteDialog = false },
-            confirmButton = {
-                TextButton(onClick = {
-                    AuthManager.deleteUserAt(userToDeleteIndex!!)
-                    users = AuthManager.getAllUsers()
-                    showDeleteDialog = false
-                }) {
-                    Text("Delete")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel")
-                }
-            },
-            title = { Text("Delete User") },
-            text = { Text("Are you sure you want to delete this user?") }
-        )
-    }
-}
-
-@Composable
 fun UserRow(user: User, onEdit: () -> Unit, onDelete: () -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
@@ -164,7 +76,7 @@ fun UserDialog(
                     onValueChange = { email = it },
                     label = { Text("Email") },
                     singleLine = true,
-                    enabled = user == null // disable editing email if editing existing user (email as key)
+                    enabled = user == null
                 )
                 OutlinedTextField(
                     value = password,
@@ -200,4 +112,122 @@ fun UserDialog(
             }
         }
     )
+}
+
+@Composable
+fun UsersManagementScreen(
+    onNavigateBack: () -> Unit
+) {
+    var users by remember { mutableStateOf(AuthManager.getAllUsers()) }
+    var editingUserIndex by remember { mutableStateOf<Int?>(null) }
+    var showAddDialog by remember { mutableStateOf(false) }
+    var showEditDialog by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    var userToEdit by remember { mutableStateOf<User?>(null) }
+    var userToDeleteIndex by remember { mutableStateOf<Int?>(null) }
+
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("User Management", style = MaterialTheme.typography.titleLarge) },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+                }
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp)
+        ) {
+            Button(onClick = { showAddDialog = true }, modifier = Modifier.fillMaxWidth()) {
+                Text("Add User")
+            }
+
+            Spacer(Modifier.height(16.dp))
+
+            LazyColumn(modifier = Modifier.weight(1f)) {
+                itemsIndexed(users) { index, user ->
+                    UserRow(
+                        user = user,
+                        onEdit = {
+                            userToEdit = user
+                            editingUserIndex = index
+                            showEditDialog = true
+                        },
+                        onDelete = {
+                            userToDeleteIndex = index
+                            showDeleteDialog = true
+                        }
+                    )
+                    Divider()
+                }
+            }
+
+            Spacer(Modifier.height(16.dp))
+
+            Button(onClick = onNavigateBack, modifier = Modifier.fillMaxWidth()) {
+                Text("Back to Dashboard")
+            }
+        }
+    }
+
+    if (showAddDialog) {
+        UserDialog(
+            title = "Add User",
+            onDismiss = { showAddDialog = false },
+            onConfirm = { newUser ->
+                AuthManager.addUser(newUser)
+                users = AuthManager.getAllUsers()
+                showAddDialog = false
+            }
+        )
+    }
+
+    if (showEditDialog && userToEdit != null && editingUserIndex != null) {
+        UserDialog(
+            title = "Edit User",
+            user = userToEdit,
+            onDismiss = { showEditDialog = false },
+            onConfirm = { updatedUser ->
+                AuthManager.updateUserAt(editingUserIndex!!, updatedUser)
+                users = AuthManager.getAllUsers()
+                showEditDialog = false
+            }
+        )
+    }
+
+    if (showDeleteDialog && userToDeleteIndex != null) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    AuthManager.deleteUserAt(userToDeleteIndex!!)
+                    users = AuthManager.getAllUsers()
+                    showDeleteDialog = false
+                }) {
+                    Text("Delete")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text("Cancel")
+                }
+            },
+            title = { Text("Delete User") },
+            text = { Text("Are you sure you want to delete this user?") }
+        )
+    }
 }

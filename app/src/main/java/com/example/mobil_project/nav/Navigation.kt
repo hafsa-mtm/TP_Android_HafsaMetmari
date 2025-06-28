@@ -15,6 +15,7 @@ import com.example.mobil_project.ui_product.product.component.DetailsScreen
 import com.example.mobil_project.ui_product.product.screens.*
 import com.example.mobil_project.ui_product.product.screens.admin.AdminOrdersScreen
 import com.example.mobil_project.ui_product.product.screens.admin.AdminProductsScreen
+import com.example.mobil_project.ui_product.product.screens.admin.ProfileAdminScreen
 import com.example.mobil_project.ui_product.product.screens.admin.UsersManagementScreen
 
 @Composable
@@ -171,7 +172,18 @@ fun AppNavigation(
                 onNavigateToUsers = { navController.navigate("admin_users") },
                 onNavigateToOrders = { navController.navigate("admin_orders") },
                 onNavigateToProducts = { navController.navigate("admin_products") },
-                onNavigateToProfile = { navController.navigate("profile") }
+                onNavigateToProfile = { navController.navigate("admin_profile") }
+            )
+        }
+        composable("admin_profile") {
+            ProfileAdminScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onLogoutClick = {
+                    AuthManager.logout()
+                    navController.navigate("login") {
+                        popUpTo("admin_profile") { inclusive = true }
+                    }
+                }
             )
         }
 
